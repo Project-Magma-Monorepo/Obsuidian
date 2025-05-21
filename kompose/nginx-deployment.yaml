@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose --file docker-compose.yml convert
+    kompose.version: 1.35.0 (9532ceef3)
+  labels:
+    io.kompose.service: nginx
+  name: nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: nginx
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose --file docker-compose.yml convert
+        kompose.version: 1.35.0 (9532ceef3)
+      labels:
+        io.kompose.service: nginx
+    spec:
+      containers:
+        - args:
+            - /bin/bash
+            - -c
+            - ' mkdir -p /etc/nginx/sites-available /etc/nginx/sites-enabled && ln -sf /etc/nginx/sites-available/sui_server /etc/nginx/sites-enabled/ && nginx -g ''daemon off;'''
+          image: nginx:latest
+          name: nginx
+          ports:
+            - containerPort: 443
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /etc/nginx/conf.d/default.conf
+              name: nginx-cm0
+              readOnly: true
+              subPath: default.conf
+            - mountPath: /etc/nginx/ssl/fullchain.pem
+              name: nginx-cm1
+              readOnly: true
+              subPath: fullchain.pem
+            - mountPath: /etc/nginx/ssl/privkey.pem
+              name: nginx-cm2
+              readOnly: true
+              subPath: privkey.pem
+      restartPolicy: Always
+      volumes:
+        - configMap:
+            items:
+              - key: default.conf
+                path: default.conf
+            name: nginx-cm0
+          name: nginx-cm0
+        - configMap:
+            items:
+              - key: fullchain.pem
+                path: fullchain.pem
+            name: nginx-cm1
+          name: nginx-cm1
+        - configMap:
+            items:
+              - key: privkey.pem
+                path: privkey.pem
+            name: nginx-cm2
+          name: nginx-cm2

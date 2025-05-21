@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose --file docker-compose.yml convert
+    kompose.version: 1.35.0 (9532ceef3)
+  labels:
+    io.kompose.service: lava-node-config
+  name: lava-node-config
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: lava-node-config
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose --file docker-compose.yml convert
+        kompose.version: 1.35.0 (9532ceef3)
+      labels:
+        io.kompose.service: lava-node-config
+    spec:
+      containers:
+        - args:
+            - " dasel put -f /lava/.lava/config/genesis.json -t string -v ulava 'app_state.gov.params.min_deposit.[0].denom' && dasel put -f /lava/.lava/config/genesis.json -t string -v '100' 'app_state.gov.params.min_deposit.[0].amount' && dasel put -f /lava/.lava/config/genesis.json -t string -v '10s' 'app_state.gov.params.voting_period' && dasel put -f /lava/.lava/config/genesis.json -t string -v '10s' 'app_state.gov.params.expedited_voting_period' && dasel put -f /lava/.lava/config/genesis.json -t string -v 'ulava' 'app_state.gov.params.expedited_min_deposit.[0].denom' && dasel put -f /lava/.lava/config/genesis.json -t string -v '200' 'app_state.gov.params.expedited_min_deposit.[0].amount' && dasel put -f /lava/.lava/config/genesis.json -t string -v '0.67' 'app_state.gov.params.expedited_threshold' && dasel put -f /lava/.lava/config/genesis.json -t string -v 'ulava' 'app_state.mint.params.mint_denom' && dasel put -f /lava/.lava/config/genesis.json -t string -v 'ulava' 'app_state.staking.params.bond_denom' && dasel put -f /lava/.lava/config/genesis.json -t string -v 'ulava' 'app_state.crisis.constant_fee.denom' && dasel put -f /lava/.lava/config/genesis.json -t string -v '5' 'app_state.epochstorage.params.epochsToSave' && dasel put -f /lava/.lava/config/genesis.json -t string -v '4' 'app_state.epochstorage.params.epochBlocks' && dasel put -f /lava/.lava/config/genesis.json -t string -v '0' 'app_state.distribution.params.community_tax' && dasel put -f /lava/.lava/config/genesis.json -t string -v '0' 'app_state.rewards.params.validators_subscription_participation' && dasel put -f /lava/.lava/config/genesis.json -t string -v '1s' 'app_state.downtime.params.downtime_duration' &&\ndasel put -f /lava/.lava/config/config.toml -t string -v 1s 'consensus.timeout_propose' && dasel put -f /lava/.lava/config/config.toml -t string -v 500ms 'consensus.timeout_propose_delta' && dasel put -f /lava/.lava/config/config.toml -t string -v 1s 'consensus.timeout_prevote' && dasel put -f /lava/.lava/config/config.toml -t string -v 500ms 'consensus.timeout_prevote_delta' && dasel put -f /lava/.lava/config/config.toml -t string -v 500ms 'consensus.timeout_precommit' && dasel put -f /lava/.lava/config/config.toml -t string -v 1s 'consensus.timeout_precommit_delta' && dasel put -f /lava/.lava/config/config.toml -t string -v 1s 'consensus.timeout_commit' && dasel put -f /lava/.lava/config/config.toml -t string -v false 'consensus.skip_timeout_commit' &&\ndasel put -f /lava/.lava/config/config.toml -t string -v true 'rosetta.enable' && dasel put -f /lava/.lava/config/config.toml -t string -v \"tcp://0.0.0.0:26657\" 'rpc.laddr' && dasel put -f /lava/.lava/config/app.toml -t string -v \"0.0.0.0:9090\" 'grpc.address' && dasel put -f /lava/.lava/config/app.toml -t string -v \"tcp://0.0.0.0:1317\" 'api.address' && dasel put -f /lava/.lava/config/app.toml -t string -v true 'api.enable' "
+          command:
+            - sh
+            - -c
+          image: ghcr.io/tomwright/dasel:v2.7.0
+          name: lava-node-config
+          volumeMounts:
+            - mountPath: /lava
+              name: lava-data
+      restartPolicy: Always
+      volumes:
+        - name: lava-data
+          persistentVolumeClaim:
+            claimName: lava-data

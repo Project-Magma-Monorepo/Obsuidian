@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose --file docker-compose.yml convert
+    kompose.version: 1.35.0 (9532ceef3)
+  labels:
+    io.kompose.service: provider2
+  name: provider2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: provider2
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose --file docker-compose.yml convert
+        kompose.version: 1.35.0 (9532ceef3)
+      labels:
+        io.kompose.service: provider2
+    spec:
+      containers:
+        - args:
+            - rpcprovider
+            - provider_lava.yml
+            - --chain-id
+            - lava
+            - --from
+            - servicer2
+            - --log_level
+            - debug
+            - --geolocation
+            - "2"
+            - --keyring-backend
+            - test
+            - --shard-id
+            - "2"
+            - --node
+            - tcp://lava-node:26657
+          image: ghcr.io/lavanet/lava/lavap:v5.2.1
+          name: provider2
+          volumeMounts:
+            - mountPath: /lava/config/provider_lava.yml
+              name: provider2-cm0
+              readOnly: true
+              subPath: provider_lava.yml
+            - mountPath: /lava
+              name: lava-data
+      restartPolicy: Always
+      volumes:
+        - configMap:
+            items:
+              - key: provider_lava.yml
+                path: provider_lava.yml
+            name: provider2-cm0
+          name: provider2-cm0
+        - name: lava-data
+          persistentVolumeClaim:
+            claimName: lava-data

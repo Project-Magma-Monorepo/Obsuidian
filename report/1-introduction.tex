@@ -1,0 +1,45 @@
+\section{Introduction}
+
+In the rapidly evolving landscape of blockchain technology, the ability to efficiently access and analyze on-chain data has become a critical requirement for decentralized applications (dApps). As blockchain ecosystems mature, the volume of transaction data grows exponentially, creating significant challenges for developers who need to access this data in real-time to power their applications.
+
+The Sui blockchain, developed by Mysten Labs, represents a new generation of high-performance blockchains designed for wide-scale adoption. With its unique object-centric data model and high throughput capabilities, Sui enables developers to build sophisticated dApps with enhanced performance and scalability. However, this advancement comes with its own set of challenges, particularly in the realm of data indexing and retrieval.
+
+\subsection{The Critical Role of Indexers in Blockchain Ecosystems}
+
+Blockchain indexers play a pivotal role in the ecosystem by transforming raw on-chain data into structured, queryable formats that applications can easily consume. Without efficient indexing solutions, dApps would need to scan the entire blockchain history to retrieve relevant information, a process that is both resource-intensive and time-prohibitive.
+
+On the Sui blockchain, indexers are especially important due to several factors:
+
+\begin{itemize}
+    \item \textbf{Real-time Frontend Updates:} Modern dApps require near-instantaneous reflection of on-chain state changes in their user interfaces.
+    \item \textbf{Analytics and Insights:} Teams need comprehensive data about user interactions, transaction patterns, and contract performance to optimize their applications.
+    \item \textbf{Historical Data Access:} Applications often need to access historical transaction data that may not be readily available from full nodes.
+    \item \textbf{Custom Filtering and Processing:} Different applications have unique requirements for filtering and processing on-chain events relevant to their specific use cases.
+\end{itemize}
+
+\subsection{Current Challenges in Data Indexing on Sui}
+
+Despite their critical importance, implementing effective indexing solutions on Sui presents several significant challenges:
+
+\begin{itemize}
+    \item \textbf{Technical Complexity:} Building a custom indexer requires deep knowledge of Rust programming and intimate familiarity with the Sui framework, creating a steep learning curve for many development teams.
+    \item \textbf{Resource Requirements:} Traditional indexing approaches often require dedicated development resources, diverting attention from core application development.
+    \item \textbf{Data Custody and Ownership:} Existing third-party solutions may not provide full data ownership or self-custody options, creating potential dependencies and restrictions.
+    \item \textbf{Scalability Concerns:} As applications grow, their data requirements increase, requiring indexing solutions that can scale efficiently with minimal overhead.
+    \item \textbf{Cost Efficiency:} For early-stage projects or smaller teams, the cost of developing and maintaining custom indexing infrastructure can be prohibitive.
+\end{itemize}
+
+A recent survey of Sui developers and founders, conducted in collaboration with the Sui DevRel team, revealed that implementing proper data indexing solutions consumes approximately 30\% of the total development time required to bring a product to market on the Sui blockchain. This represents a significant bottleneck in the development pipeline and highlights the urgent need for more efficient and accessible indexing solutions.
+
+\subsection{Towards a More Accessible Indexing Solution}
+
+This master project addresses these challenges by introducing two complementary contributions to the Sui ecosystem:
+
+\begin{enumerate}
+    \item A modular SDK approach (sui-indexer-modular) that allows developers to specify both the database type and precise actions on specific fields of checkpoint transactions, simplifying the framework and reducing the learning curve.
+    \item A so-called generic indexing solution (sui\_indexer\_checkpointTx) that automatically fetches all transaction data related to a specified package, but does not allow the developer to choose the database type or customize the data extraction, enabling teams to run analytical operations without deep knowledge of the Sui framework.
+\end{enumerate}
+
+Both solutions are designed with self-custody in mind, allowing teams to maintain full ownership of their data by running the indexer locally or in their own infrastructure. By providing these tools, we aim to significantly reduce the development overhead associated with data indexing, allowing teams to focus on their core application logic while still benefiting from comprehensive on-chain data access.
+
+The following sections will detail the technical implementation of these solutions, explore their benefits compared to existing approaches, and demonstrate their practical application through real-world use cases. 

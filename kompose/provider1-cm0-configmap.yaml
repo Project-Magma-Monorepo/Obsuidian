@@ -1,0 +1,10 @@
+apiVersion: v1
+data:
+  provider_sui.yml: "endpoints:\n  - api-interface: jsonrpc\n    chain-id: SUIJSONRPC\n    network-address:\n      address: 0.0.0.0:2220 #important to match ports for provider\n      disable-tls: true\n    node-urls: \n      - url: http://sui-node:9000\n      # - url : https://sui-mainnet.nodeinfra.com\n    disable-tls: true\n  # - api-interface: tendermintrpc\n  #   chain-id: LAV1\n  #   network-address:\n  #     address: \"0.0.0.0:3334\"\n  #   node-urls:\n  #     - url: ws://lava-node:26657/websocket\n  #     - url: http://lava-node:26657\n  #       # addons:\n  #       #   - archive\n  # - api-interface: grpc\n  #   chain-id: LAV1\n  #   network-address:\n  #     address: \"0.0.0.0:3335\"\n  #   node-urls: \n  #     - url: lava-node:9090\n  #       # addons:\n  #       #   - archive\n  # - api-interface: rest\n  #   chain-id: LAV1\n  #   network-address:\n  #     address: \"0.0.0.0:3336\"\n  #   node-urls: \n  #     - url: http://lava-node:1317\n  #       # addons:\n  #       #   - archive\n\n"
+kind: ConfigMap
+metadata:
+  annotations:
+    use-subpath: "true"
+  labels:
+    io.kompose.service: provider1
+  name: provider1-cm0

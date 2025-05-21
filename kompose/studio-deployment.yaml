@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose --file docker-compose.yml convert
+    kompose.version: 1.35.0 (9532ceef3)
+  labels:
+    io.kompose.service: studio
+  name: studio
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: studio
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose --file docker-compose.yml convert
+        kompose.version: 1.35.0 (9532ceef3)
+      labels:
+        io.kompose.service: studio
+    spec:
+      containers:
+        - env:
+            - name: AUTH_JWT_SECRET
+              value: Txu1DaIDjxlEjSskD4iVAAkCtGMlbvlNyEy5uXOvX9A
+            - name: DEFAULT_ORGANIZATION_NAME
+              value: Default Organization
+            - name: DEFAULT_PROJECT_NAME
+              value: Default Project
+            - name: LOGFLARE_API_KEY
+              value: your-super-secret-and-long-logflare-key
+            - name: LOGFLARE_URL
+              value: http://analytics:4000
+            - name: NEXT_ANALYTICS_BACKEND_PROVIDER
+              value: postgres
+            - name: NEXT_PUBLIC_ENABLE_LOGS
+              value: "true"
+            - name: OPENAI_API_KEY
+            - name: POSTGRES_PASSWORD
+              value: sui-indexer
+            - name: STUDIO_PG_META_URL
+              value: http://meta:8080
+            - name: SUPABASE_ANON_KEY
+              value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlzcyI6InN1cGFiYXNlIiwiaWF0IjoxNzA5NjgwMDAwLCJleHAiOjE3NDEzMDIwMDB9.nMeWn_y9wYSOzm0KVJxIL06vRNNd5UCJCwE5_AHqqSU
+            - name: SUPABASE_PUBLIC_URL
+              value: http://localhost:8000
+            - name: SUPABASE_SERVICE_KEY
+              value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoic2VydmljZV9yb2xlIiwiaXNzIjoic3VwYWJhc2UiLCJpYXQiOjE3MDk2ODAwMDAsImV4cCI6MTc0MTMwMjAwMH0.XKNzeV-TFb8AbITWXyJlR2LHax6MbRSuEEShYldPvIY
+            - name: SUPABASE_URL
+              value: http://kong:8000
+          image: supabase/studio:20250224-d10db0f
+          livenessProbe:
+            exec:
+              command:
+                - node
+                - -e
+                - fetch('http://studio:3000/api/platform/profile').then((r) => {if (r.status !== 200) throw new Error(r.status)})
+            failureThreshold: 3
+            periodSeconds: 5
+            timeoutSeconds: 10
+          name: supabase-studio
+      restartPolicy: Always

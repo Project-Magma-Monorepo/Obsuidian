@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose --file docker-compose.yml convert
+    kompose.version: 1.35.0 (9532ceef3)
+  labels:
+    io.kompose.service: sui-node
+  name: sui-node
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: sui-node
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose --file docker-compose.yml convert
+        kompose.version: 1.35.0 (9532ceef3)
+      labels:
+        io.kompose.service: sui-node
+    spec:
+      containers:
+        - args:
+            - /opt/sui/bin/sui-node
+            - --config-path
+            - /opt/sui/config/fullnode.yaml
+          image: mysten/sui-node:mainnet-v1.19.1
+          name: sui-node
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+            - containerPort: 8084
+              protocol: UDP
+            - containerPort: 9000
+              protocol: TCP
+            - containerPort: 9184
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /opt/sui/config/fullnode.yaml
+              name: sui-node-cm0
+              readOnly: true
+              subPath: fullnode.yaml
+            - mountPath: /opt/sui/config/genesis.blob
+              name: sui-node-cm1
+              readOnly: true
+              subPath: genesis.blob
+      restartPolicy: Always
+      volumes:
+        - configMap:
+            items:
+              - key: fullnode-template.yaml
+                path: fullnode.yaml
+            name: sui-node-cm0
+          name: sui-node-cm0
+        - configMap:
+            items:
+              - key: genesis.blob
+                path: genesis.blob
+            name: sui-node-cm1
+          name: sui-node-cm1

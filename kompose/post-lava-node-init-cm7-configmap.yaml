@@ -1,0 +1,435 @@
+apiVersion: v1
+data:
+  adventurer.json: |-
+    {
+        "proposal": {
+            "title": "Add plan proposal: Adventurer",
+            "description": "A proposal for a new plan for an adventurer user",
+            "plans": [
+                {
+                    "index": "adventurer",
+                    "description": "Plan for the Lava adventurer",
+                    "type": "rpc",
+                    "price": {
+                        "denom": "ulava",
+                        "amount": "600000000000"
+                    },
+                    "annual_discount_percentage": 0,
+                    "allow_overuse": false,
+                    "overuse_rate": 0,
+                    "projects": 1,
+                    "plan_policy": {
+                        "geolocation_profile": "GL",
+                        "total_cu_limit": 1000000000,
+                        "epoch_cu_limit": 5000000,
+                        "max_providers_to_pair": 12,
+                        "chain_policies": [],
+                        "selected_providers": [],
+                        "selected_providers_mode": "ALLOWED"
+                    }
+                }
+            ]
+        },
+        "deposit": "10000000ulava"
+    }
+  explorer.json: |-
+    {
+        "proposal": {
+            "title": "Add plan proposal: Explorer",
+            "description": "A proposal for a new plan for an explorer user",
+            "plans": [
+                {
+                    "index": "explorer",
+                    "description": "Plan for the Lava explorer",
+                    "type": "rpc",
+                    "price": {
+                        "denom": "ulava",
+                        "amount": "5000000000"
+                    },
+                    "annual_discount_percentage": 0,
+                    "allow_overuse": false,
+                    "overuse_rate": 0,
+                    "projects": 2,
+                    "plan_policy": {
+                        "geolocation_profile": "GL",
+                        "total_cu_limit": 10000000,
+                        "epoch_cu_limit": 100000,
+                        "max_providers_to_pair": 12,
+                        "chain_policies": [],
+                        "selected_providers": [],
+                        "selected_providers_mode": "ALLOWED"
+                    }
+                }
+            ]
+        },
+        "deposit": "10000000ulava"
+    }
+  gateway-full.json: |-
+    {
+        "proposal": {
+            "title": "Add plan proposal: Gateway",
+            "description": "A proposal for a new plan for a lava gateway",
+            "plans": [
+                {
+                    "index": "gateway",
+                    "description": "Plan for the Lava gateway",
+                    "type": "rpc",
+                    "price": {
+                        "denom": "ulava",
+                        "amount": "1000000000"
+                    },
+                    "allowed_buyers": [
+                        "lava@1x07x0krj7h00jejrcp35kvlc8tpa44dza76dw8"
+                    ],
+                    "annual_discount_percentage": 0,
+                    "allow_overuse": false,
+                    "overuse_rate": 0,
+                    "projects": 50,
+                    "plan_policy": {
+                        "geolocation_profile": "GL",
+                        "total_cu_limit": 9223372036854775807,
+                        "epoch_cu_limit": 9223372036854775807,
+                        "max_providers_to_pair": 24,
+                        "selected_providers": [],
+                        "selected_providers_mode": "ALLOWED",
+                        "chain_policies": [
+                            {
+                                "apis": [],
+                                "chain_id": "NEAR",
+                                "requirements": [
+                                    {
+                                        "collection": {
+                                            "add_on": "",
+                                            "api_interface": "jsonrpc",
+                                            "internal_path": "",
+                                            "type": "POST"
+                                        },
+                                        "extensions": [
+                                            "archive"
+                                        ],
+                                        "mixed": true
+                                    }
+                                ]
+                            },
+                            {
+                                "apis": [],
+                                "chain_id": "STRK",
+                                "requirements": [
+                                    {
+                                        "collection": {
+                                            "add_on": "trace",
+                                            "api_interface": "jsonrpc",
+                                            "internal_path": "",
+                                            "type": "POST"
+                                        },
+                                        "extensions": [],
+                                        "mixed": true
+                                    }
+                                ]
+                            },
+                            {
+                                "apis": [],
+                                "chain_id": "ETH1",
+                                "requirements": [
+                                    {
+                                        "collection": {
+                                            "add_on": "",
+                                            "api_interface": "jsonrpc",
+                                            "internal_path": "",
+                                            "type": "POST"
+                                        },
+                                        "extensions": [
+                                            "archive"
+                                        ],
+                                        "mixed": true
+                                    }
+                                ]
+                            },
+                            {
+                                "apis": [],
+                                "chain_id": "EVMOS",
+                                "requirements": [
+                                    {
+                                        "collection": {
+                                            "add_on": "",
+                                            "api_interface": "jsonrpc",
+                                            "internal_path": "",
+                                            "type": "POST"
+                                        },
+                                        "extensions": [
+                                            "archive"
+                                        ],
+                                        "mixed": true
+                                    },
+                                    {
+                                        "collection": {
+                                            "add_on": "",
+                                            "api_interface": "rest",
+                                            "internal_path": "",
+                                            "type": "GET"
+                                        },
+                                        "extensions": [
+                                            "archive"
+                                        ],
+                                        "mixed": true
+                                    },
+                                    {
+                                        "collection": {
+                                            "add_on": "",
+                                            "api_interface": "grpc",
+                                            "internal_path": "",
+                                            "type": ""
+                                        },
+                                        "extensions": [
+                                            "archive"
+                                        ],
+                                        "mixed": true
+                                    },
+                                    {
+                                        "collection": {
+                                            "add_on": "",
+                                            "api_interface": "tendermintrpc",
+                                            "internal_path": "",
+                                            "type": ""
+                                        },
+                                        "extensions": [
+                                            "archive"
+                                        ],
+                                        "mixed": true
+                                    }
+                                ]
+                            },
+                            {
+                                "apis": [],
+                                "chain_id": "AXELAR",
+                                "requirements": [
+                                    {
+                                        "collection": {
+                                            "add_on": "",
+                                            "api_interface": "rest",
+                                            "internal_path": "",
+                                            "type": "GET"
+                                        },
+                                        "extensions": [
+                                            "archive"
+                                        ],
+                                        "mixed": true
+                                    },
+                                    {
+                                        "collection": {
+                                            "add_on": "",
+                                            "api_interface": "tendermintrpc",
+                                            "internal_path": "",
+                                            "type": ""
+                                        },
+                                        "extensions": [
+                                            "archive"
+                                        ],
+                                        "mixed": true
+                                    },
+                                    {
+                                        "collection": {
+                                            "add_on": "",
+                                            "api_interface": "grpc",
+                                            "internal_path": "",
+                                            "type": ""
+                                        },
+                                        "extensions": [
+                                            "archive"
+                                        ],
+                                        "mixed": true
+                                    }
+                                ]
+                            },
+                            {
+                                "apis": [],
+                                "chain_id": "OSMOSIS",
+                                "requirements": [
+                                    {
+                                        "collection": {
+                                            "add_on": "",
+                                            "api_interface": "rest",
+                                            "internal_path": "",
+                                            "type": "GET"
+                                        },
+                                        "extensions": [
+                                            "archive"
+                                        ],
+                                        "mixed": true
+                                    },
+                                    {
+                                        "collection": {
+                                            "add_on": "",
+                                            "api_interface": "tendermintrpc",
+                                            "internal_path": "",
+                                            "type": ""
+                                        },
+                                        "extensions": [
+                                            "archive"
+                                        ],
+                                        "mixed": true
+                                    },
+                                    {
+                                        "collection": {
+                                            "add_on": "",
+                                            "api_interface": "grpc",
+                                            "internal_path": "",
+                                            "type": ""
+                                        },
+                                        "extensions": [
+                                            "archive"
+                                        ],
+                                        "mixed": true
+                                    }
+                                ]
+                            },
+                            {
+                                "apis": [],
+                                "chain_id": "COSMOSHUB",
+                                "requirements": [
+                                    {
+                                        "collection": {
+                                            "add_on": "",
+                                            "api_interface": "rest",
+                                            "internal_path": "",
+                                            "type": "GET"
+                                        },
+                                        "extensions": [
+                                            "archive"
+                                        ],
+                                        "mixed": true
+                                    },
+                                    {
+                                        "collection": {
+                                            "add_on": "",
+                                            "api_interface": "tendermintrpc",
+                                            "internal_path": "",
+                                            "type": ""
+                                        },
+                                        "extensions": [
+                                            "archive"
+                                        ],
+                                        "mixed": true
+                                    },
+                                    {
+                                        "collection": {
+                                            "add_on": "",
+                                            "api_interface": "grpc",
+                                            "internal_path": "",
+                                            "type": ""
+                                        },
+                                        "extensions": [
+                                            "archive"
+                                        ],
+                                        "mixed": true
+                                    }
+                                ]
+                            },
+                            {
+                                "apis": [],
+                                "chain_id": "SQDSUBGRAPH",
+                                "requirements": [
+                                    {
+                                        "collection": {
+                                            "api_interface": "rest",
+                                            "internal_path": "",
+                                            "type": "POST",
+                                            "add_on": "compound-v3"
+                                        },
+                                        "mixed": true
+                                    },
+                                    {
+                                        "collection": {
+                                            "api_interface": "rest",
+                                            "internal_path": "",
+                                            "type": "POST",
+                                            "add_on": "aave-v3"
+                                        },
+                                        "mixed": true
+                                    }
+                                ]
+                            },
+                            {
+                                "apis": [],
+                                "chain_id": "*",
+                                "requirements": []
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "deposit": "10000000ulava"
+    }
+  gateway.json: |-
+    {
+        "proposal": {
+            "title": "Add plan proposal: Gateway",
+            "description": "A proposal for a new plan for a lava gateway",
+            "plans": [
+                {
+                    "index": "gateway",
+                    "description": "Plan for the Lava gateway",
+                    "type": "rpc",
+                    "price": {
+                        "denom": "ulava",
+                        "amount": "1000000000"
+                    },
+                    "allowed_buyers": [
+                        "lava@1w5ck6qa34p2fwfue0fc3wf9n44agcg6r3pm5j5"
+                    ],
+                    "annual_discount_percentage": 0,
+                    "allow_overuse": false,
+                    "overuse_rate": 0,
+                    "projects": 50,
+                    "plan_policy": {
+                        "geolocation_profile": "GL",
+                        "total_cu_limit": 9223372036854775807,
+                        "epoch_cu_limit": 9223372036854775807,
+                        "max_providers_to_pair": 24,
+                        "selected_providers": [],
+                        "selected_providers_mode": "ALLOWED",
+                        "chain_policies": []
+                    }
+                }
+            ]
+        },
+        "deposit": "10000000ulava"
+    }
+  whale.json: |-
+    {
+        "proposal": {
+            "title": "Add plan proposal: Whale",
+            "description": "A proposal for a new plan for a whale user",
+            "plans": [
+                {
+                    "index": "whale",
+                    "description": "Plan for the Lava whale",
+                    "type": "rpc",
+                    "price": {
+                        "denom": "ulava",
+                        "amount": "100000000000000"
+                    },
+                    "annual_discount_percentage": 0,
+                    "allow_overuse": false,
+                    "overuse_rate": 0,
+                    "projects": 8,
+                    "plan_policy": {
+                        "geolocation_profile": "GL",
+                        "total_cu_limit": 9223372036854775807,
+                        "epoch_cu_limit": 9223372036854775807,
+                        "max_providers_to_pair": 12,
+                        "chain_policies": [],
+                        "selected_providers": [],
+                        "selected_providers_mode": "ALLOWED"
+                    }
+                }
+            ]
+        },
+        "deposit": "10000000ulava"
+    }
+kind: ConfigMap
+metadata:
+  labels:
+    io.kompose.service: post-lava-node-init
+  name: post-lava-node-init-cm7

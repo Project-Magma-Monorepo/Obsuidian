@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose --file docker-compose.yml convert
+    kompose.version: 1.35.0 (9532ceef3)
+  labels:
+    io.kompose.service: consumer
+  name: consumer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: consumer
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose --file docker-compose.yml convert
+        kompose.version: 1.35.0 (9532ceef3)
+      labels:
+        io.kompose.service: consumer
+    spec:
+      containers:
+        - args:
+            - rpcconsumer
+            - consumer.yml
+            - --chain-id
+            - lava
+            - --from
+            - servicer1
+            - --geolocation
+            - "2"
+            - --log_level
+            - trace
+            - --allow-insecure-provider-dialing
+            - --keyring-backend
+            - test
+            - --node
+            - tcp://lava-node:26657
+          image: ghcr.io/lavanet/lava/lavap:v5.2.1
+          name: consumer
+          ports:
+            - containerPort: 3334
+              protocol: TCP
+            - containerPort: 3335
+              protocol: TCP
+            - containerPort: 3336
+              protocol: TCP
+            - containerPort: 2220
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /lava/config/consumer.yml
+              name: consumer-cm0
+              readOnly: true
+              subPath: consumer.yml
+            - mountPath: /lava
+              name: lava-data
+      restartPolicy: Always
+      volumes:
+        - configMap:
+            items:
+              - key: consumer.yml
+                path: consumer.yml
+            name: consumer-cm0
+          name: consumer-cm0
+        - name: lava-data
+          persistentVolumeClaim:
+            claimName: lava-data

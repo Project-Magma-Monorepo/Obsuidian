@@ -1,0 +1,73 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose --file docker-compose.yml convert
+    kompose.version: 1.35.0 (9532ceef3)
+  labels:
+    io.kompose.service: post-lava-node-init
+  name: post-lava-node-init
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: post-lava-node-init
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose --file docker-compose.yml convert
+        kompose.version: 1.35.0 (9532ceef3)
+      labels:
+        io.kompose.service: post-lava-node-init
+    spec:
+      containers:
+        - args:
+            - /lava/config/post_node_init.sh
+          command:
+            - sh
+          image: ghcr.io/lavanet/lava/lavad:v5.2.1
+          name: post-lava-node-init
+          volumeMounts:
+            - mountPath: /lava
+              name: lava-data
+            - mountPath: /lava/config/post_node_init.sh
+              name: post-lava-node-init-cm1
+              subPath: post_node_init.sh
+            - mountPath: /lava/config/sui.json
+              name: post-lava-node-init-claim3
+            - mountPath: /lava/config/lava.json
+              name: post-lava-node-init-claim4
+            - mountPath: /lava/config/ibc.json
+              name: post-lava-node-init-claim5
+            - mountPath: /lava/config/tendermint.json
+              name: post-lava-node-init-claim6
+            - mountPath: /lava/cookbook/plans
+              name: post-lava-node-init-cm7
+      restartPolicy: Never
+      volumes:
+        - name: lava-data
+          persistentVolumeClaim:
+            claimName: lava-data
+        - configMap:
+            items:
+              - key: post_node_init.sh
+                path: post_node_init.sh
+            name: post-lava-node-init-cm1
+          name: post-lava-node-init-cm1
+        - name: post-lava-node-init-claim3
+          persistentVolumeClaim:
+            claimName: post-lava-node-init-claim3
+        - name: post-lava-node-init-claim4
+          persistentVolumeClaim:
+            claimName: post-lava-node-init-claim4
+        - name: post-lava-node-init-claim5
+          persistentVolumeClaim:
+            claimName: post-lava-node-init-claim5
+        - name: post-lava-node-init-claim6
+          persistentVolumeClaim:
+            claimName: post-lava-node-init-claim6
+        - configMap:
+            name: post-lava-node-init-cm7
+          name: post-lava-node-init-cm7

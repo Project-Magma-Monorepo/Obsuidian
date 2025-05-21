@@ -1,0 +1,54 @@
+\BOOKMARK [1][-]{section.1}{Introduction}{}% 1
+\BOOKMARK [2][-]{subsection.1.1}{The Critical Role of Indexers in Blockchain Ecosystems}{section.1}% 2
+\BOOKMARK [2][-]{subsection.1.2}{Current Challenges in Data Indexing on Sui}{section.1}% 3
+\BOOKMARK [2][-]{subsection.1.3}{Towards a More Accessible Indexing Solution}{section.1}% 4
+\BOOKMARK [1][-]{section.2}{Background and Current State of Indexing on Sui}{}% 5
+\BOOKMARK [2][-]{subsection.2.1}{Sui Blockchain Architecture}{section.2}% 6
+\BOOKMARK [2][-]{subsection.2.2}{Data Flow and Transaction Lifecycle in Sui}{section.2}% 7
+\BOOKMARK [3][-]{subsubsection.2.2.1}{Transaction Structure}{subsection.2.2}% 8
+\BOOKMARK [3][-]{subsubsection.2.2.2}{Checkpoint Structure}{subsection.2.2}% 9
+\BOOKMARK [2][-]{subsection.2.3}{Current Indexing Methods and Schemas}{section.2}% 10
+\BOOKMARK [3][-]{subsubsection.2.3.1}{Native Sui Indexing}{subsection.2.3}% 11
+\BOOKMARK [3][-]{subsubsection.2.3.2}{Current Third-Party Indexing Solutions}{subsection.2.3}% 12
+\BOOKMARK [3][-]{subsubsection.2.3.3}{Typical Indexing Schema}{subsection.2.3}% 13
+\BOOKMARK [2][-]{subsection.2.4}{Limitations and Challenges of Current Approaches}{section.2}% 14
+\BOOKMARK [2][-]{subsection.2.5}{The Developer Experience Gap}{section.2}% 15
+\BOOKMARK [1][-]{section.3}{Contribution 1: Modular Indexer SDK Approach}{}% 16
+\BOOKMARK [2][-]{subsection.3.1}{Design Philosophy}{section.3}% 17
+\BOOKMARK [2][-]{subsection.3.2}{Technical Implementation}{section.3}% 18
+\BOOKMARK [3][-]{subsubsection.3.2.1}{Architecture Overview}{subsection.3.2}% 19
+\BOOKMARK [3][-]{subsubsection.3.2.2}{Core Components Analysis}{subsection.3.2}% 20
+\BOOKMARK [2][-]{subsection.3.3}{Database Schema Design}{section.3}% 21
+\BOOKMARK [2][-]{subsection.3.4}{Implementation Walkthrough}{section.3}% 22
+\BOOKMARK [2][-]{subsection.3.5}{Advantages over Traditional Approaches}{section.3}% 23
+\BOOKMARK [2][-]{subsection.3.6}{Use Case Example: NFT Collection Analytics}{section.3}% 24
+\BOOKMARK [2][-]{subsection.3.7}{Limitations and Future Work}{section.3}% 25
+\BOOKMARK [1][-]{section.4}{Contribution 2: Generic Package-Based Indexer}{}% 26
+\BOOKMARK [2][-]{subsection.4.1}{Design Philosophy}{section.4}% 27
+\BOOKMARK [2][-]{subsection.4.2}{Technical Implementation}{section.4}% 28
+\BOOKMARK [3][-]{subsubsection.4.2.1}{Architecture Overview}{subsection.4.2}% 29
+\BOOKMARK [3][-]{subsubsection.4.2.2}{Key Implementation Features}{subsection.4.2}% 30
+\BOOKMARK [2][-]{subsection.4.3}{Deployment and Usage}{section.4}% 31
+\BOOKMARK [3][-]{subsubsection.4.3.1}{Local vs. Remote Mode}{subsection.4.3}% 32
+\BOOKMARK [2][-]{subsection.4.4}{Data Model and Storage}{section.4}% 33
+\BOOKMARK [2][-]{subsection.4.5}{Use Case Example: DeFi Protocol Analytics}{section.4}% 34
+\BOOKMARK [2][-]{subsection.4.6}{Advantages for Non-Technical Teams}{section.4}% 35
+\BOOKMARK [2][-]{subsection.4.7}{Limitations and Future Work}{section.4}% 36
+\BOOKMARK [1][-]{section.5}{Analysis and Comparative Evaluation}{}% 37
+\BOOKMARK [2][-]{subsection.5.1}{Comparative Analysis of the Two Contributions}{section.5}% 38
+\BOOKMARK [2][-]{subsection.5.2}{Comparison with Existing Solutions}{section.5}% 39
+\BOOKMARK [3][-]{subsubsection.5.2.1}{Feature Comparison}{subsection.5.2}% 40
+\BOOKMARK [3][-]{subsubsection.5.2.2}{Development Time Impact}{subsection.5.2}% 41
+\BOOKMARK [2][-]{subsection.5.3}{Performance Analysis}{section.5}% 42
+\BOOKMARK [3][-]{subsubsection.5.3.1}{Processing Efficiency}{subsection.5.3}% 43
+\BOOKMARK [3][-]{subsubsection.5.3.2}{Resource Utilization}{subsection.5.3}% 44
+\BOOKMARK [2][-]{subsection.5.4}{Developer Experience Enhancement}{section.5}% 45
+\BOOKMARK [2][-]{subsection.5.5}{Integration with Analytics Platforms}{section.5}% 46
+\BOOKMARK [2][-]{subsection.5.6}{Ecosystem Impact Assessment}{section.5}% 47
+\BOOKMARK [2][-]{subsection.5.7}{Future Research Directions}{section.5}% 48
+\BOOKMARK [1][-]{section.6}{Conclusion}{}% 49
+\BOOKMARK [2][-]{subsection.6.1}{Summary of Contributions}{section.6}% 50
+\BOOKMARK [2][-]{subsection.6.2}{Impact on the Developer Experience}{section.6}% 51
+\BOOKMARK [2][-]{subsection.6.3}{Limitations and Future Work}{section.6}% 52
+\BOOKMARK [2][-]{subsection.6.4}{Broader Implications for Blockchain Ecosystems}{section.6}% 53
+\BOOKMARK [2][-]{subsection.6.5}{Final Thoughts}{section.6}% 54

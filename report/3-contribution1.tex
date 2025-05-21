@@ -1,0 +1,149 @@
+\section{Contribution 1: Modular Indexer SDK Approach}
+
+Our first contribution addresses the complexity of data indexing on Sui through a modular SDK approach. This implementation, found in the \texttt{sui-indexer-modular} repository, provides a flexible framework that allows developers to specify both the database type and precise actions on specific fields of checkpoint transactions. This is distinct from the so-called generic solution (sui\_indexer\_checkpointTx), which does not offer this flexibility.
+
+\subsection{Design Philosophy}
+
+The design philosophy behind our modular indexer SDK centers on three core principles:
+
+\begin{itemize}
+    \item \textbf{Selective Processing:} Developers should be able to choose exactly which transaction fields they want to process and store.
+    \item \textbf{Customizable Actions:} The SDK should provide hooks for custom processing logic on specific data fields.
+    \item \textbf{Self-Custody:} Data should be stored in a standard format in the developer's own database, ensuring full control and ownership.
+    \item \textbf{Explicit Type Extraction:} Developers must specify the exact type of data they wish to extract from each chosen field, ensuring precise and relevant data processing.
+    \item \textbf{Custom Database Schema:} Before using the SDK, developers are required to define their own database schema tailored to their application's needs, allowing for optimal data organization and query efficiency.
+\end{itemize}
+
+This approach significantly reduces the learning curve associated with building custom indexers while maintaining full flexibility for project-specific requirements.
+
+\subsection{Technical Implementation}
+
+\subsubsection{Architecture Overview}
+
+The modular indexer SDK is implemented as a Rust library that leverages the Sui Alt Framework for checkpoint processing. The architecture consists of several key components:
+
+\begin{itemize}
+    \item \textbf{SuiIndexer:} The main entry point that coordinates the indexing process.
+    \item \textbf{IndexField:} An enum defining the various data fields that can be indexed (transactions, effects, events, input objects, output objects).
+    \item \textbf{IndexCallback:} A type for callback functions that process specific fields of checkpoint data.
+    \item \textbf{IndexerPipeline:} The processing pipeline that filters transactions and applies callbacks.
+    \item \textbf{Database Schema:} A structured PostgreSQL schema that stores the indexed data.
+\end{itemize}
+
+\subsubsection{Core Components Analysis}
+
+The core implementation revolves around three key aspects:
+
+\begin{enumerate}
+    \item \textbf{Field Selection Mechanism:} The SDK provides a clean interface for selecting which transaction fields to index:
+
+    \begin{verbatim}
+    indexer.set_filter_fields(vec![
+        IndexField::Transaction,
+        IndexField::Effects,
+        IndexField::Events
+    ]);
+    \end{verbatim}
+
+    \item \textbf{Custom Callback System:} For each selected field, developers can register a custom callback function that processes the data according to project-specific needs:
+
+    \begin{verbatim}
+    indexer.set_filter_callback_for_field(
+        IndexField::Transaction,
+        |checkpoint_data| {
+            // Custom processing logic
+            Ok(processed_data)
+        }
+    );
+    \end{verbatim}
+
+    \item \textbf{Package Filtering:} The SDK allows focusing on transactions that interact with specific packages, reducing processing overhead:
+
+    \begin{verbatim}
+    indexer.set_filter_package(package_address);
+    \end{verbatim}
+\end{enumerate}
+
+\subsection{Database Schema Design}
+
+The modular indexer uses a PostgreSQL database with a carefully designed schema that balances structure and flexibility:
+
+\begin{itemize}
+    \item \textbf{transactions:} Stores transaction metadata and serialized transaction data.
+    \item \textbf{transaction\_effects:} Records the effects of transactions, including created, modified, and deleted objects.
+    \item \textbf{transaction\_events:} Captures custom events emitted during transaction execution.
+    \item \textbf{input\_objects:} Tracks objects used as inputs to transactions.
+    \item \textbf{output\_objects:} Records objects created or modified by transactions.
+\end{itemize}
+
+Each table uses a combination of structured fields for common queries and JSON fields for flexible data storage, allowing for efficient querying while maintaining full data fidelity.
+
+\subsection{Implementation Walkthrough}
+
+The implementation provides a developer-friendly workflow:
+
+\begin{enumerate}
+    \item \textbf{Initialize the Indexer:} Create a new SuiIndexer instance.
+    \item \textbf{Configure Package Filter:} Specify which smart contract package to track.
+    \item \textbf{Select Fields to Index:} Choose which transaction fields to process and store.
+    \item \textbf{Register Custom Callbacks:} Define processing logic for each selected field.
+    \item \textbf{Start the Indexer:} Begin processing checkpoints from a specified starting point.
+\end{enumerate}
+
+This workflow significantly reduces the amount of boilerplate code needed to implement a custom indexer, allowing developers to focus on their specific data processing requirements.
+
+Before starting the indexing process, developers must explicitly define:
+\begin{itemize}
+    \item The data types to be extracted from each selected field (e.g., specific event structures, transaction details, or object types).
+    \item The structure of their target database schema, ensuring that the extracted data can be stored and queried efficiently according to their application's requirements.
+\end{itemize}
+
+\subsection{Advantages over Traditional Approaches}
+
+The modular SDK approach offers several key advantages over traditional custom indexer implementations:
+
+\begin{itemize}
+    \item \textbf{Reduced Development Time:} By providing a structured framework with clear extension points, the SDK significantly reduces the time required to implement a custom indexer.
+    
+    \item \textbf{Lower Technical Barrier:} Developers can focus on their specific data processing needs without having to understand the full complexity of the Sui framework.
+    
+    \item \textbf{Improved Maintainability:} The clear separation of concerns and modular design make the indexer easier to maintain and extend over time.
+    
+    \item \textbf{Data Self-Custody:} Unlike third-party services, the SDK allows teams to maintain full control over their data.
+    
+    \item \textbf{Resource Efficiency:} By selectively processing only relevant data fields, the indexer requires fewer computational resources.
+\end{itemize}
+
+\subsection{Use Case Example: NFT Collection Analytics}
+
+To illustrate the practical application of the modular SDK, consider an NFT marketplace that needs to track all transactions related to a specific NFT collection.
+
+Using the modular SDK, the implementation would:
+
+\begin{enumerate}
+    \item Set the package filter to the NFT collection's package address
+    \item Select relevant fields: transactions, events, and output objects
+    \item Register a custom callback for events to extract minting, transfer, and sale information
+    \item Store the processed data in a PostgreSQL database
+    \item Expose the data through an API for the marketplace frontend
+\end{enumerate}
+
+This implementation would require minimal code and could be completed in a fraction of the time compared to a traditional custom indexer approach.
+
+\subsection{Limitations and Future Work}
+
+While the modular SDK significantly improves the developer experience, it does have some limitations:
+
+\begin{itemize}
+    \item \textbf{Learning Curve:} Some knowledge of Rust is still required to implement custom callbacks.
+    \item \textbf{Schema Flexibility:} The predefined database schema may not be optimal for all use cases.
+    \item \textbf{Limited Analytics:} Advanced analytics still require custom queries against the database.
+\end{itemize}
+
+Future work could address these limitations through:
+
+\begin{itemize}
+    \item Adding support for non-Rust callback definitions (e.g., through a configuration file or DSL)
+    \item Implementing a schema migration system for customizing the database structure
+    \item Integrating with analytics tools for streamlined dashboarding
+\end{itemize} 
