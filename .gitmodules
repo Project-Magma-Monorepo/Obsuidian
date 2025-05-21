@@ -2,3 +2,7 @@
 	path = full-node
 	url = git@github.com:Project-Magma-Monorepo/sui-full-node-docker.git
 	branch = main
+[submodule "lava"]
+	path = lava
+	url = git@github.com:Project-Magma-Monorepo/lava.git
+	branch = main
