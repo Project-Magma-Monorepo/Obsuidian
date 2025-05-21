@@ -1,0 +1,4 @@
+[submodule "full-node"]
+	path = full-node
+	url = git@github.com:Project-Magma-Monorepo/sui-full-node-docker.git
+	branch = main
