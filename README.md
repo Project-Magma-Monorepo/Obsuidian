@@ -1,42 +1,56 @@
-# Project Magma: Blockchain Data Indexing Platform
+# Obsidian: A full decentralized, load-balancing, and redundant RPC
+# Also comes built in a packet Indexer (Index data with only your package ID !)
 
-A comprehensive platform that combines Lava Network, SUI blockchain indexing, SUI Full Node, Lava Provider, and Supabase database services in a unified Docker Compose setup.
+A comprehensive platform that combines Lava Network, SUI blockchain indexing (sui-indexer-alt),a SUI Full Node, and Supabase database services in a unified Docker Compose setup.
 
 ## Project Structure
 
 ```
 MasterProject/
-├── docker-compose.yml             # Main compose file with service integrations
+├── docker-compose.yml                  # Main compose file with service integrations
+├── docker-compose.override.yml         # Service definitions for containers that need to share volumes networks
 ├── lava/
-│   ├── config.yml                 # Lava node configuration
+│   ├── docker/
+│   │   ├── common/
+│   │   │   ├── consumer.yml
+│   │   │   ├── new_node_init.sh
+│   │   │   ├── post_node_init.sh       # Script responsible for the creating and stake of the provider
+│   │   │   ├── provider_lava.yml
+│   │   │   ├── provider_sui.yml
+│   │   ├── simple-provider/
+│   │   │   ├── docker-compose.yml      # Lava docker services definition
+│   │   │   └── nginx/
+│   │   │       └── default.conf
+├── full-node/                          # SUI Full Node directory
+│   ├── fullnode-template.yaml          # SUI Full Node configuration
+│   └── docker-compose.yml              # SUI Full Node docker services definition
+├── sui_indexer_checkpointTx/
+│   ├── Dockerfile                      # Indexer Dockerfile definition
+│   └── docker-compose.yml              # SUI indexer services definition
+├── supabase/
 │   └── docker/
-│       └── state-sync/
-│           └── docker-compose.yml  # Lava node services definition
-├── lava-provider/                 # Lava Provider configuration
-│   └── docker-compose.yml         # Lava provider services definition
-├── sui-fullnode/                  # SUI Full Node directory
-│   ├── fullnode.yaml              # SUI Full Node configuration
-│   └── docker-compose.yml         # SUI Full Node services definition
-├── sui-sender-indexer/
-│   └── docker-compose.yml         # SUI indexer services definition
-└── supabase/
-    └── docker/
-        └── docker-compose.yml     # Supabase services definition
+│       └── docker-compose.yml          # Supabase docker services definition
+└── sui-tool/
+    ├── data/
+    │   └── genesis.blob
+    ├── docker-compose.yml              # Sui-tool docker services definition
+    └── Dockerfile                      # Sui-tool Dockerfile definition
+
 ```
 
 ## Components Overview
 
 ### 1. Lava Node
-Provides blockchain node services for the Lava Network. Includes state synchronization capabilities for fast bootstrapping.
+Provides blockchain node services for the Lava Network. Handles the consensus and the state of the SUI providers (availability, load-balancing, fault tolerance, decentralization, QoS)
 
 ### 2. Lava Provider
-Acts as a relay for blockchain data requests. Serves RPC requests to the SUI Full Node and leverages auto-generated REST endpoints from Supabase.
+Acts as a gateway for RPC requests. Serves RPC requests from an arbitray number of SUI Full Nodes and unites them under the lava network. They can be either a local SUI Full Node or an already existing external RPC (we use both here)
 
 ### 3. SUI Full Node
-Serves as the primary data source for the SUI blockchain. Provides RPC endpoints that the Lava Provider relays to clients.
+Serves as the primary data source for the SUI blockchain. Provides RPC endpoints that the Lava Provider relays to clients, and also checkpoint for the ingestion of the Indexer.
 
-### 4. SUI Indexer
-Processes SUI blockchain data from the SUI Full Node and stores it in the Supabase database. Depends on both the Supabase database and SUI Full Node being available.
+### 4. SUI Indexer (sui-indexer-alt)
+Processes SUI blockchain data from the SUI Full Node and stores it in the Supabase database. Depends on both the Supabase database and SUI Full Node being available (in local mode, external checkpoint reader mode also supported).
 
 ### 5. Supabase
 Provides PostgreSQL database services and auto-generates REST endpoints from the database schema, which are used by the Lava Provider to serve indexed data.
@@ -44,50 +58,27 @@ Provides PostgreSQL database services and auto-generates REST endpoints from the
 ## Dependencies Flow
 
 ```
-                       ┌───────────────┐
-                       │  SUI Full Node│
-                       └───────┬───────┘
-                               │
-              ┌────────────────┴────────────────┐
-              │                                 │
-              ▼                                 ▼
-┌────────────┐   feeds    ┌────────────┐   serves RPC   ┌────────────┐
-│ SUI Indexer │◄──────────┤ Blockchain │───────────────►│Lava Provider│
-└──────┬─────┘    data    │    Data    │               └──────┬─────┘
-       │                  └────────────┘                      │
-       │ stores                                               │
-       ▼                                                      │
-┌─────────────┐  auto-generates   ┌────────────────┐          │
-│ Supabase DB │─────────────────►│  REST Endpoints │◄─────────┘
-└─────┬───────┘                  └────────────────┘    serves REST
-      │
-      │ provides
-      ▼
-┌────────────────┐              ┌────────────┐
-│  Data Storage  │◄─────────────┤  Lava Node │
-│  & API Services│              └────────────┘
-└────────────────┘
+add excalidraw
 ```
 
 ## Containers
-
-| Service Name | Description | Ports |
-|-------------|-------------|-------|
-| lava-node | Lava blockchain node | 1317, 9090, 9091, 26656, 26657 |
-| lava-node-init | Initializes the Lava node | - |
-| lava-node-config | Configures the Lava node | - |
-| lava-provider | Lava Provider for relaying blockchain requests | 7777 |
-| sui-fullnode | SUI blockchain full node | 9000, 9184 |
-| sui-indexer | Indexes SUI blockchain data | (depends on implementation) |
-| supabase-db | PostgreSQL database | 5432 |
-| supabase-kong | API Gateway | 8000 |
-| supabase-auth | Authentication service | - |
-| supabase-rest | RESTful API service | 3000 |
-| supabase-studio | Admin UI | 3001 |
-| supabase-storage | File storage | - |
-| supabase-realtime | Real-time subscriptions | - |
-| supabase-vector | Vector embeddings | - |
-| supabase-supavisor | Connection pooler | - |
+CONTAINER ID   IMAGE                               COMMAND                   CREATED        STATUS                          PORTS                                                                                                          NAMES
+761df5eee5f5   nginx:latest                        "/docker-entrypoint.…"    24 hours ago   Up 24 hours                     80/tcp, 0.0.0.0:443->443/tcp                                                                                   master-project-nginx-1
+fb7312dfa511   ghcr.io/lavanet/lava/lavap:v5.2.1   "lavap rpcprovider p…"    24 hours ago   Up 24 hours                     1317/tcp, 8080/tcp, 9090-9091/tcp, 26656-26657/tcp                                                             master-project-provider2-1
+41052782807c   ghcr.io/lavanet/lava/lavap:v5.2.1   "lavap rpcprovider p…"    24 hours ago   Up 24 hours                     1317/tcp, 8080/tcp, 9090-9091/tcp, 26656-26657/tcp                                                             master-project-provider1-1
+9d1190302f3b   ghcr.io/lavanet/lava/lavap:v5.2.1   "lavap rpcconsumer c…"    24 hours ago   Up 24 hours                     0.0.0.0:2220->2220/tcp, 1317/tcp, 8080/tcp, 9090-9091/tcp, 26656-26657/tcp, 0.0.0.0:3334-3336->3334-3336/tcp   master-project-consumer-1
+5438202901f3   supabase/postgres-meta:v0.86.1      "docker-entrypoint.s…"    24 hours ago   Up 24 hours (healthy)           8080/tcp                                                                                                       supabase-meta
+6fff872143a9   master-project-indexer              "/app/entrypoint.sh"      24 hours ago   Up 24 hours                                                                                                                                    master-project-indexer-1
+51987bd9b7b9   postgrest/postgrest:v12.2.8         "postgrest"               24 hours ago   Up 24 hours                     3000/tcp                                                                                                       supabase-rest
+5f888cb86370   supabase/supavisor:2.4.12           "/usr/bin/tini -s -g…"    24 hours ago   Restarting (1) 30 seconds ago                                                                                                                  supabase-pooler
+77df03934628   supabase/gotrue:v2.170.0            "auth"                    24 hours ago   Up 24 hours (healthy)                                                                                                                          supabase-auth
+a515b596090c   ghcr.io/lavanet/lava/lavad:v5.2.1   "lavad start --pruni…"    24 hours ago   Up 24 hours (healthy)           0.0.0.0:1317->1317/tcp, 8080/tcp, 0.0.0.0:9090->9090/tcp, 0.0.0.0:26656-26657->26656-26657/tcp, 9091/tcp       lava-node
+c8ce5e686d6d   supabase/postgres:15.8.1.044        "docker-entrypoint.s…"    24 hours ago   Up 24 hours (healthy)           5432/tcp                                                                                                       supabase-db
+77da110d3c59   supabase/studio:20250224-d10db0f    "docker-entrypoint.s…"    24 hours ago   Up 24 hours (healthy)           3000/tcp                                                                                                       supabase-studio
+4e54565e8c21   kong:2.8.1                          "bash -c 'eval \"echo…"   24 hours ago   Up 24 hours (healthy)           0.0.0.0:8000->8000/tcp, 8001/tcp, 0.0.0.0:8443->8443/tcp, 8444/tcp                                             supabase-kong
+cd74cabe6130   timberio/vector:0.28.1-alpine       "/usr/local/bin/vect…"    24 hours ago   Up 24 hours (healthy)                                                                                                                          supabase-vector
+812b78afc74e   supabase/logflare:1.12.5            "sh run.sh"               24 hours ago   Up 24 hours (healthy)           0.0.0.0:4000->4000/tcp                                                                                         supabase-analytics
+0d90b67f56c6   mysten/sui-node:mainnet             "/opt/sui/bin/sui-no…"    24 hours ago   Up 24 hours                     0.0.0.0:8080->8080/tcp, 0.0.0.0:9000->9000/tcp, 0.0.0.0:9184->9184/tcp, 0.0.0.0:8084->8084/udp                 master-project-sui-node-1
 
 ## Setup Instructions
 
@@ -95,55 +86,37 @@ Provides PostgreSQL database services and auto-generates REST endpoints from the
 
 - Docker and Docker Compose v2+ installed
 - At least 16GB RAM available for all services
-- At least 200GB storage space (SUI Full Node requires significant storage)
+
+## Sui Hardware requirements (if running in local mode)
+Suggested minimum hardware to run a Sui Full node:
+
+CPUs: 8 physical cores / 16 vCPUs
+RAM: 128 GB
+Storage (SSD): 4 TB NVMe drive
 
 ### Installation Steps
 
 1. Clone the repository:
    ```bash
-   git clone <repository-url> MasterProject
-   cd MasterProject
+   git clone git@github.com:Project-Magma-Monorepo/Monorepo.git
+   cd Monorepo
    ```
 
 2. Configure your environment:
-   - Review and modify `lava/config.yml` as needed
-   - Configure `sui-fullnode/fullnode.yaml` with appropriate network settings
-   - Configure `lava-provider/config.yml` to point to SUI Full Node and Supabase endpoints
-   - Check any environment variables in the individual docker-compose files
+   - Review and modify `lava/docker/common/provider_sui.yml` as needed (put rpc url, can be local or external rpc)
+   - Configure `full-node/fullnode-template.yaml` with appropriate network settings
+   - Configure `.env` by taking inspiration from the `.env.example` file. This env file should override all local env files and act as a single env config when ran from root
+   - Check any environment variables in the individual docker-compose files (shouldn't be needed if ran from root)
 
-3. Update the main docker-compose file:
-   ```yaml
-   # MasterProject/docker-compose.yml
-   include:
-     - path: ./lava/docker/state-sync/docker-compose.yml
-       project_directory: ./lava/docker/state-sync
-       name: lava
-       
-     - path: ./lava-provider/docker-compose.yml
-       project_directory: ./lava-provider
-       name: lava-provider
-       
-     - path: ./sui-fullnode/docker-compose.yml
-       project_directory: ./sui-fullnode
-       name: sui-fullnode
-       
-     - path: ./sui-sender-indexer/docker-compose.yml
-       project_directory: ./sui-sender-indexer
-       name: sui
-       
-     - path: ./supabase/docker/docker-compose.yml
-       project_directory: ./supabase/docker
-       name: supabase
-   ```
 
-4. Start all services:
+3. Start all services (from root):
    ```bash
    docker compose up -d
    ```
 
 5. Check service status:
    ```bash
-   docker compose ps
+   docker ps
    ```
 
 ## Service Dependencies
@@ -155,25 +128,6 @@ The system is designed with the following dependency chain:
 3. SUI Indexer starts after both Supabase DB is healthy and SUI Full Node is available
 4. Lava Provider starts after both SUI Full Node and Supabase REST services are available
 5. Lava Node runs independently but connects to the Lava Provider
-
-To set up these dependencies in docker-compose.yml:
-
-```yaml
-# Update services in docker-compose.yml
-sui-indexer:
-  depends_on:
-    supabase-db:
-      condition: service_healthy
-    sui-fullnode:
-      condition: service_healthy
-
-lava-provider:
-  depends_on:
-    sui-fullnode:
-      condition: service_healthy
-    supabase-rest:
-      condition: service_healthy
-```
 
 ## Supabase REST API Integration
 
@@ -192,16 +146,6 @@ Supabase automatically generates RESTful API endpoints from your database tables
 2. Configure proper roles and permissions for API access
 3. Use the Supabase Studio interface to manage and test endpoints
 
-Example configuration in the Lava Provider to use Supabase REST endpoint:
-
-```yaml
-endpoints:
-  - name: sui_getTransactionsByAddress
-    target: http://supabase-rest:3000/rest/v1/transactions?address=eq.{{.address}}&limit={{.limit}}
-    method: GET
-    headers:
-      apikey: ${SUPABASE_ANON_KEY}
-```
 
 ## Common Commands
 
@@ -210,9 +154,14 @@ endpoints:
 docker compose up -d
 ```
 
+### List running services
+```bash
+docker ps
+```
+
 ### Stop all services
 ```bash
-docker compose down
+docker compose down 
 ```
 
 ### Restart a specific service
@@ -238,20 +187,13 @@ docker stats
 ## Data Flows
 
 1. **SUI Blockchain → SUI Full Node**: The Full Node syncs with the SUI blockchain network.
-2. **SUI Full Node → SUI Indexer**: The indexer retrieves data from the local SUI Full Node.
+2. **SUI Full Node → SUI Indexer**: The indexer retrieves data from the local SUI Full Node by ingesting its checkpoints.
 3. **SUI Indexer → Supabase DB**: Processed blockchain data is stored in the Supabase PostgreSQL database.
 4. **Supabase DB → REST Endpoints**: Supabase automatically generates REST APIs from the database schema.
-5. **External Applications → Lava Network → Lava Provider**: Applications make requests through the Lava Network.
-6. **Lava Provider → SUI Full Node**: Direct RPC requests are forwarded to the SUI Full Node.
+5. **External Applications → Lava Network → Lava Provider**: Applications make requests through the Lava Network RPC endpoints (gateway).
+6. **Lava Provider → SUI Full Node**: Direct RPC requests to the Lava gateway are forwarded to the SUI Full Node.
 7. **Lava Provider → Supabase REST**: Indexed data requests are forwarded to Supabase's auto-generated REST endpoints.
 
-## Volumes
-
-The setup maintains persistent data through Docker volumes:
-
-- `lava_data`: Stores blockchain data for the Lava node
-- `sui_fullnode_data`: Stores the SUI blockchain data for the Full Node
-- Supabase-related volumes for database, storage, etc.
 
 ## SUI Full Node Setup
 
@@ -284,31 +226,20 @@ The SUI Full Node requires specific configuration:
 
 The Lava Provider serves as a gateway between client applications and blockchain data sources:
 
-1. Configure the Lava Provider to connect to the Lava Network:
+1. Configure the Lava Provider for its RPC (important to disable TLS, nginx handles TLS):
    ```yaml
-   # lava-provider/config.yml
-   provider:
-     chain: sui
-     network: mainnet
-     moniker: "my-sui-provider"
-     # Lava staking details
-     stake: "5000000000ulava"
-   ```
-
-2. Set up endpoints mapping:
-   ```yaml
-   # Simple RPC endpoints forwarded to SUI Full Node
+   # lava/docker/common/
    endpoints:
-     - name: sui_getObject
-       target: http://sui-fullnode:9000
-       method: POST
-     
-     # REST endpoints from Supabase
-     - name: sui_getIndexedBlocks
-       target: http://supabase-rest:3000/rest/v1/sui_blocks
-       method: GET
-       headers:
-         apikey: ${SUPABASE_ANON_KEY}
+  - api-interface: jsonrpc
+    chain-id: SUIJSONRPC
+    network-address:
+      address: 0.0.0.0:2220 #important to match ports for provider
+      disable-tls: true
+    node-urls: 
+      - url: http://sui-node:9000
+      # - url : https://sui-mainnet.nodeinfra.com
+      # - url : https://fullnode.mainnet.sui.io:443
+    disable-tls: true
    ```
 
 ## Troubleshooting
@@ -321,7 +252,7 @@ If the Lava Provider cannot connect to data sources:
 
 ### SUI Full Node Synchronization Issues
 If the SUI Full Node is not synchronizing:
-1. Check if the Full Node is syncing: `docker compose logs sui-fullnode`
+1. Check if the Full Node is syncing: `docker compose logs full-node`
 2. Verify the genesis blob is correct for your network
 3. Check the fullnode.yaml configuration
 4. Ensure enough disk space is available for blockchain data
@@ -365,10 +296,6 @@ docker compose down && docker compose up -d
 ```bash
 # Backup Supabase database
 docker compose exec supabase-db pg_dump -U postgres -d postgres > backup.sql
-
-# Backup SUI configuration (not blockchain data)
-cp sui-fullnode/fullnode.yaml sui-fullnode/fullnode.yaml.backup
-```
 
 ### Monitoring Services
 ```bash
