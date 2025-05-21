@@ -61,24 +61,24 @@ Provides PostgreSQL database services and auto-generates REST endpoints from the
 
 ## Docker Containers
 
-| Container ID | Image                                | Command                     | Status                  | Ports                                                                                     | Name                            |
-|--------------|---------------------------------------|-----------------------------|-------------------------|-------------------------------------------------------------------------------------------|---------------------------------|
-| 761df5eee5f5 | nginx:latest                          | /docker-entrypoint.…        | Up 24 hours             | 80/tcp, 0.0.0.0:443->443/tcp                                                               | master-project-nginx-1         |
-| fb7312dfa511 | ghcr.io/lavanet/lava/lavap:v5.2.1     | lavap rpcprovider p…        | Up 24 hours             | 1317, 8080, 9090-9091, 26656-26657                                                         | master-project-provider2-1     |
-| 41052782807c | ghcr.io/lavanet/lava/lavap:v5.2.1     | lavap rpcprovider p…        | Up 24 hours             | 1317, 8080, 9090-9091, 26656-26657                                                         | master-project-provider1-1     |
-| 9d1190302f3b | ghcr.io/lavanet/lava/lavap:v5.2.1     | lavap rpcconsumer c…        | Up 24 hours             | 2220→2220, 1317, 8080, 9090-91, 26656-57, 3334-3336→3334-3336                              | master-project-consumer-1      |
-| 5438202901f3 | supabase/postgres-meta:v0.86.1        | docker-entrypoint.s…        | Up 24 hours (healthy)   | 8080/tcp                                                                                   | supabase-meta                  |
-| 6fff872143a9 | master-project-indexer                | /app/entrypoint.sh          | Up 24 hours             |                                                                                           | master-project-indexer-1       |
-| 51987bd9b7b9 | postgrest/postgrest:v12.2.8           | postgrest                   | Up 24 hours             | 3000/tcp                                                                                   | supabase-rest                  |
-| 5f888cb86370 | supabase/supavisor:2.4.12             | /usr/bin/tini -s -g…        | Restarting (1) 30s ago  |                                                                                           | supabase-pooler                |
-| 77df03934628 | supabase/gotrue:v2.170.0              | auth                        | Up 24 hours (healthy)   |                                                                                           | supabase-auth                  |
-| a515b596090c | ghcr.io/lavanet/lava/lavad:v5.2.1     | lavad start --pruni…        | Up 24 hours (healthy)   | 1317→1317, 8080, 9090→9090, 26656-57→26656-57, 9091                                        | lava-node                      |
-| c8ce5e686d6d | supabase/postgres:15.8.1.044          | docker-entrypoint.s…        | Up 24 hours (healthy)   | 5432/tcp                                                                                   | supabase-db                    |
-| 77da110d3c59 | supabase/studio:20250224-d10db0f      | docker-entrypoint.s…        | Up 24 hours (healthy)   | 3000/tcp                                                                                   | supabase-studio                |
-| 4e54565e8c21 | kong:2.8.1                            | bash -c 'eval "echo…        | Up 24 hours (healthy)   | 8000→8000, 8001, 8443→8443, 8444                                                            | supabase-kong                  |
-| cd74cabe6130 | timberio/vector:0.28.1-alpine         | /usr/local/bin/vect…        | Up 24 hours (healthy)   |                                                                                           | supabase-vector                |
-| 812b78afc74e | supabase/logflare:1.12.5              | sh run.sh                   | Up 24 hours (healthy)   | 4000→4000                                                                                  | supabase-analytics             |
-| 0d90b67f56c6 | mysten/sui-node:mainnet               | /opt/sui/bin/sui-no…        | Up 24 hours             | 8080→8080, 9000→9000, 9184→9184, 8084/udp                                                  | master-project-sui-node-1      |
+| Image                                | Command                   | Ports                                                                                     | Name                            |
+|-------------------------------------|---------------------------|-------------------------------------------------------------------------------------------|---------------------------------|
+| nginx:latest                        | /docker-entrypoint.…      | 80/tcp, 0.0.0.0:443->443/tcp                                                               | master-project-nginx-1         |
+| ghcr.io/lavanet/lava/lavap:v5.2.1   | lavap rpcprovider p…      | 1317, 8080, 9090-9091, 26656-26657                                                         | master-project-provider2-1     |
+| ghcr.io/lavanet/lava/lavap:v5.2.1   | lavap rpcprovider p…      | 1317, 8080, 9090-9091, 26656-26657                                                         | master-project-provider1-1     |
+| ghcr.io/lavanet/lava/lavap:v5.2.1   | lavap rpcconsumer c…      | 2220→2220, 1317, 8080, 9090-91, 26656-57, 3334-3336→3334-3336                              | master-project-consumer-1      |
+| supabase/postgres-meta:v0.86.1      | docker-entrypoint.s…      | 8080/tcp                                                                                   | supabase-meta                  |
+| master-project-indexer              | /app/entrypoint.sh        |                                                                                           | master-project-indexer-1       |
+| postgrest/postgrest:v12.2.8         | postgrest                 | 3000/tcp                                                                                   | supabase-rest                  |
+| supabase/supavisor:2.4.12           | /usr/bin/tini -s -g…      |                                                                                           | supabase-pooler                |
+| supabase/gotrue:v2.170.0            | auth                      |                                                                                           | supabase-auth                  |
+| ghcr.io/lavanet/lava/lavad:v5.2.1   | lavad start --pruni…      | 1317→1317, 8080, 9090→9090, 26656-57→26656-57, 9091                                        | lava-node                      |
+| supabase/postgres:15.8.1.044        | docker-entrypoint.s…      | 5432/tcp                                                                                   | supabase-db                    |
+| supabase/studio:20250224-d10db0f    | docker-entrypoint.s…      | 3000/tcp                                                                                   | supabase-studio                |
+| kong:2.8.1                          | bash -c 'eval "echo…      | 8000→8000, 8001, 8443→8443, 8444                                                            | supabase-kong                  |
+| timberio/vector:0.28.1-alpine       | /usr/local/bin/vect…      |                                                                                           | supabase-vector                |
+| supabase/logflare:1.12.5            | sh run.sh                 | 4000→4000                                                                                  | supabase-analytics             |
+| mysten/sui-node:mainnet             | /opt/sui/bin/sui-no…      | 8080→8080, 9000→9000, 9184→9184, 8084/udp                                                  | master-project-sui-node-1      |
 
 ## Setup Instructions
 
