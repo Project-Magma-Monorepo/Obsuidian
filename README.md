@@ -228,18 +228,16 @@ The Lava Provider serves as a gateway between client applications and blockchain
 
 1. Configure the Lava Provider for its RPC (important to disable TLS, nginx handles TLS):
    ```yaml
-   # lava/docker/common/
-   endpoints:
-  - api-interface: jsonrpc
-    chain-id: SUIJSONRPC
-    network-address:
-      address: 0.0.0.0:2220 #important to match ports for provider
-      disable-tls: true
-    node-urls: 
-      - url: http://sui-node:9000
-      # - url : https://sui-mainnet.nodeinfra.com
-      # - url : https://fullnode.mainnet.sui.io:443
-    disable-tls: true
+      - api-interface: jsonrpc
+        chain-id: SUIJSONRPC
+        network-address:
+          address: 0.0.0.0:2220 #important to match ports for provider
+          disable-tls: true
+        node-urls: 
+          - url: http://sui-node:9000
+          # - url : https://sui-mainnet.nodeinfra.com
+          # - url : https://fullnode.mainnet.sui.io:443
+        disable-tls: true
    ```
 
 ## Troubleshooting
