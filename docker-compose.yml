@@ -1,0 +1,26 @@
+name: master-project
+
+volumes:
+  checkpoints_data:
+
+include:
+  - path: ./sui_indexer_checkpointTx/docker-compose.yml
+    project_directory: ./sui_indexer_checkpointTx
+    name: sui
+    
+  - path: ./supabase/docker/docker-compose.yml
+    project_directory: ./supabase/docker
+    name: supabase
+    
+  - path: ./full-node/docker-compose.yml
+    project_directory: ./full-node
+    name: full-node
+
+  - path: ./lava/docker/simple-provider/docker-compose.yml
+    project_directory: ./lava/docker/simple-provider
+    name: lava
+
+  # Additional Sui-Tool docker image to sync the full node up to the latest epoch
+  # - path: ./sui-tool/docker-compose.yml
+  #   project_directory: ./sui-tool/
+  #   name: sui-tool

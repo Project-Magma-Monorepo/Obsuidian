@@ -1,0 +1,20 @@
+# compose.override.yaml
+services:
+  indexer:
+    volumes:
+      - checkpoints_data:/checkpoints_indexer:ro
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_HOST=${POSTGRES_HOST}
+      - POSTGRES_PORT=${POSTGRES_PORT}
+      - REMOTE_STORE_URL=${REMOTE_STORE_URL}
+      - START_CHECKPOINT=${START_CHECKPOINT}
+      - LOCAL_MODE=${LOCAL_MODE}
+      - CHECKPOINT_DIR=${CHECKPOINT_DIR}
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  checkpoints_data:

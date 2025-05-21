@@ -6,3 +6,19 @@
 	path = lava
 	url = git@github.com:Project-Magma-Monorepo/lava.git
 	branch = main
+[submodule "supabase"]
+	path = supabase
+	url = git@github.com:Project-Magma-Monorepo/supabase.git
+	branch = main
+[submodule "sui_indexer_checkpointTx"]
+	path = sui_indexer_checkpointTx
+	url = git@github.com:Project-Magma-Monorepo/sui_indexer_checkpointTx.git
+	branch = main
+[submodule "sui"]
+	path = sui
+	url = git@github.com:Project-Magma-Monorepo/sui.git
+	branch = main
+[submodule "sui-tool"]
+	path = sui-tool
+	url = git@github.com:Project-Magma-Monorepo/sui-tool.git
+	branch = main
