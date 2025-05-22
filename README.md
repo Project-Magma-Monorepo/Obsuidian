@@ -1,7 +1,17 @@
-# Obsidian: A full decentralized, load-balancing, and redundant RPC
-# Also comes built in a packet Indexer (Index data with only your package ID !)
+# ⚫ **Obsuidian**  
+### 🚀 A Fully Decentralized, Load-Balancing, and Redundant RPC  
+### 📦 Built-in Packet Indexer – _Index data with just your Package ID!_
 
-A comprehensive platform that combines Lava Network, SUI blockchain indexing (sui-indexer-alt),a SUI Full Node, and Supabase database services in a unified Docker Compose setup.
+---
+
+## A comprehensive platform combining **Lava Network**, **SUI blockchain indexing** (`sui-indexer-alt`), a **SUI Full Node**, and **Supabase** – all wrapped in a unified **Docker Compose** setup for seamless deployment.
+
+## [📄 Read Loris' Master Report about RPC](Master_Project_Obsidian_Loris___Alexandre.pdf)
+
+
+## Our RPC through Lava is deployed at https://sui.obsuidian.xyz 
+Feel free to test it, altough some services such as archives should not be available as we are not running them under Lava for Now, but it could totaly be added if a provider support archive reads.
+
 
 ## Project Structure
 
@@ -57,28 +67,28 @@ Provides PostgreSQL database services and auto-generates REST endpoints from the
 
 ## Dependencies Flow
 
-```
-add excalidraw
-```
+![image](https://github.com/user-attachments/assets/f48f8b1d-9981-482d-a41f-89a9a4af6d17)
 
-## Containers
-CONTAINER ID   IMAGE                               COMMAND                   CREATED        STATUS                          PORTS                                                                                                          NAMES
-761df5eee5f5   nginx:latest                        "/docker-entrypoint.…"    24 hours ago   Up 24 hours                     80/tcp, 0.0.0.0:443->443/tcp                                                                                   master-project-nginx-1
-fb7312dfa511   ghcr.io/lavanet/lava/lavap:v5.2.1   "lavap rpcprovider p…"    24 hours ago   Up 24 hours                     1317/tcp, 8080/tcp, 9090-9091/tcp, 26656-26657/tcp                                                             master-project-provider2-1
-41052782807c   ghcr.io/lavanet/lava/lavap:v5.2.1   "lavap rpcprovider p…"    24 hours ago   Up 24 hours                     1317/tcp, 8080/tcp, 9090-9091/tcp, 26656-26657/tcp                                                             master-project-provider1-1
-9d1190302f3b   ghcr.io/lavanet/lava/lavap:v5.2.1   "lavap rpcconsumer c…"    24 hours ago   Up 24 hours                     0.0.0.0:2220->2220/tcp, 1317/tcp, 8080/tcp, 9090-9091/tcp, 26656-26657/tcp, 0.0.0.0:3334-3336->3334-3336/tcp   master-project-consumer-1
-5438202901f3   supabase/postgres-meta:v0.86.1      "docker-entrypoint.s…"    24 hours ago   Up 24 hours (healthy)           8080/tcp                                                                                                       supabase-meta
-6fff872143a9   master-project-indexer              "/app/entrypoint.sh"      24 hours ago   Up 24 hours                                                                                                                                    master-project-indexer-1
-51987bd9b7b9   postgrest/postgrest:v12.2.8         "postgrest"               24 hours ago   Up 24 hours                     3000/tcp                                                                                                       supabase-rest
-5f888cb86370   supabase/supavisor:2.4.12           "/usr/bin/tini -s -g…"    24 hours ago   Restarting (1) 30 seconds ago                                                                                                                  supabase-pooler
-77df03934628   supabase/gotrue:v2.170.0            "auth"                    24 hours ago   Up 24 hours (healthy)                                                                                                                          supabase-auth
-a515b596090c   ghcr.io/lavanet/lava/lavad:v5.2.1   "lavad start --pruni…"    24 hours ago   Up 24 hours (healthy)           0.0.0.0:1317->1317/tcp, 8080/tcp, 0.0.0.0:9090->9090/tcp, 0.0.0.0:26656-26657->26656-26657/tcp, 9091/tcp       lava-node
-c8ce5e686d6d   supabase/postgres:15.8.1.044        "docker-entrypoint.s…"    24 hours ago   Up 24 hours (healthy)           5432/tcp                                                                                                       supabase-db
-77da110d3c59   supabase/studio:20250224-d10db0f    "docker-entrypoint.s…"    24 hours ago   Up 24 hours (healthy)           3000/tcp                                                                                                       supabase-studio
-4e54565e8c21   kong:2.8.1                          "bash -c 'eval \"echo…"   24 hours ago   Up 24 hours (healthy)           0.0.0.0:8000->8000/tcp, 8001/tcp, 0.0.0.0:8443->8443/tcp, 8444/tcp                                             supabase-kong
-cd74cabe6130   timberio/vector:0.28.1-alpine       "/usr/local/bin/vect…"    24 hours ago   Up 24 hours (healthy)                                                                                                                          supabase-vector
-812b78afc74e   supabase/logflare:1.12.5            "sh run.sh"               24 hours ago   Up 24 hours (healthy)           0.0.0.0:4000->4000/tcp                                                                                         supabase-analytics
-0d90b67f56c6   mysten/sui-node:mainnet             "/opt/sui/bin/sui-no…"    24 hours ago   Up 24 hours                     0.0.0.0:8080->8080/tcp, 0.0.0.0:9000->9000/tcp, 0.0.0.0:9184->9184/tcp, 0.0.0.0:8084->8084/udp                 master-project-sui-node-1
+## Docker Containers
+
+| Image                                | Command                   | Ports                                                                                     | Name                            |
+|-------------------------------------|---------------------------|-------------------------------------------------------------------------------------------|---------------------------------|
+| nginx:latest                        | /docker-entrypoint.…      | 80/tcp, 0.0.0.0:443->443/tcp                                                               | master-project-nginx-1         |
+| ghcr.io/lavanet/lava/lavap:v5.2.1   | lavap rpcprovider p…      | 1317, 8080, 9090-9091, 26656-26657                                                         | master-project-provider2-1     |
+| ghcr.io/lavanet/lava/lavap:v5.2.1   | lavap rpcprovider p…      | 1317, 8080, 9090-9091, 26656-26657                                                         | master-project-provider1-1     |
+| ghcr.io/lavanet/lava/lavap:v5.2.1   | lavap rpcconsumer c…      | 2220→2220, 1317, 8080, 9090-91, 26656-57, 3334-3336→3334-3336                              | master-project-consumer-1      |
+| supabase/postgres-meta:v0.86.1      | docker-entrypoint.s…      | 8080/tcp                                                                                   | supabase-meta                  |
+| master-project-indexer              | /app/entrypoint.sh        |                                                                                           | master-project-indexer-1       |
+| postgrest/postgrest:v12.2.8         | postgrest                 | 3000/tcp                                                                                   | supabase-rest                  |
+| supabase/supavisor:2.4.12           | /usr/bin/tini -s -g…      |                                                                                           | supabase-pooler                |
+| supabase/gotrue:v2.170.0            | auth                      |                                                                                           | supabase-auth                  |
+| ghcr.io/lavanet/lava/lavad:v5.2.1   | lavad start --pruni…      | 1317→1317, 8080, 9090→9090, 26656-57→26656-57, 9091                                        | lava-node                      |
+| supabase/postgres:15.8.1.044        | docker-entrypoint.s…      | 5432/tcp                                                                                   | supabase-db                    |
+| supabase/studio:20250224-d10db0f    | docker-entrypoint.s…      | 3000/tcp                                                                                   | supabase-studio                |
+| kong:2.8.1                          | bash -c 'eval "echo…      | 8000→8000, 8001, 8443→8443, 8444                                                            | supabase-kong                  |
+| timberio/vector:0.28.1-alpine       | /usr/local/bin/vect…      |                                                                                           | supabase-vector                |
+| supabase/logflare:1.12.5            | sh run.sh                 | 4000→4000                                                                                  | supabase-analytics             |
+| mysten/sui-node:mainnet             | /opt/sui/bin/sui-no…      | 8080→8080, 9000→9000, 9184→9184, 8084/udp                                                  | master-project-sui-node-1      |
 
 ## Setup Instructions
 
@@ -146,6 +156,8 @@ Supabase automatically generates RESTful API endpoints from your database tables
 2. Configure proper roles and permissions for API access
 3. Use the Supabase Studio interface to manage and test endpoints
 
+## An Appsmith dashboard was deployed to showcase the REST endpoints integration and editing possibilities : [🌐 Open Obsuidian Dashboard](https://app.appsmith.com/app/obsuidian/page1-681db82d4fe8f41963151370)
+If the endpoint is not working, it probably means our VPS is down, please contact us on Telegram so we can relaunch it !
 
 ## Common Commands
 
@@ -228,18 +240,16 @@ The Lava Provider serves as a gateway between client applications and blockchain
 
 1. Configure the Lava Provider for its RPC (important to disable TLS, nginx handles TLS):
    ```yaml
-   # lava/docker/common/
-   endpoints:
-  - api-interface: jsonrpc
-    chain-id: SUIJSONRPC
-    network-address:
-      address: 0.0.0.0:2220 #important to match ports for provider
-      disable-tls: true
-    node-urls: 
-      - url: http://sui-node:9000
-      # - url : https://sui-mainnet.nodeinfra.com
-      # - url : https://fullnode.mainnet.sui.io:443
-    disable-tls: true
+      - api-interface: jsonrpc
+        chain-id: SUIJSONRPC
+        network-address:
+          address: 0.0.0.0:2220 #important to match ports for provider
+          disable-tls: true
+        node-urls: 
+          - url: http://sui-node:9000
+          # - url : https://sui-mainnet.nodeinfra.com
+          # - url : https://fullnode.mainnet.sui.io:443
+        disable-tls: true
    ```
 
 ## Troubleshooting
