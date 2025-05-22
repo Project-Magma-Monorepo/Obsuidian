@@ -1,7 +1,13 @@
-# Obsidian: A full decentralized, load-balancing, and redundant RPC
-# Also comes built in a packet Indexer (Index data with only your package ID !)
+# ⚫ **Obsidian**  
+### 🚀 A Fully Decentralized, Load-Balancing, and Redundant RPC  
+#### 📦 Built-in Packet Indexer – _Index data with just your Package ID!_
 
-A comprehensive platform that combines Lava Network, SUI blockchain indexing (sui-indexer-alt),a SUI Full Node, and Supabase database services in a unified Docker Compose setup.
+---
+
+> A comprehensive platform combining **Lava Network**, **SUI blockchain indexing** (`sui-indexer-alt`), a **SUI Full Node**, and **Supabase** – all wrapped in a unified **Docker Compose** setup for seamless deployment.
+
+[📄 Read Loris' Master Report about RPC](Master_Project_Obsidian_Loris___Alexandre.pdf)
+
 
 ## Project Structure
 
