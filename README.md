@@ -9,6 +9,10 @@
 ## [📄 Read Loris' Master Report about RPC](Master_Project_Obsidian_Loris___Alexandre.pdf)
 
 
+## Our RPC through Lava is deployed at https://sui.obsuidian.xyz 
+Feel free to test it, altough some services such as archives should not be available as we are not running them under Lava for Now, but it could totaly be added if a provider support archive reads.
+
+
 ## Project Structure
 
 ```
@@ -152,6 +156,8 @@ Supabase automatically generates RESTful API endpoints from your database tables
 2. Configure proper roles and permissions for API access
 3. Use the Supabase Studio interface to manage and test endpoints
 
+## An Appsmith dashboard was deployed to showcase the REST endpoints integration and editing possibilities : [🌐 Open Obsidian Dashboard](https://app.appsmith.com/app/obsuidian/page1-681db82d4fe8f41963151370)
+If the endpoint is not working, it probably means our VPS is down, please contact us on Telegram so we can relaunch it !
 
 ## Common Commands
 
