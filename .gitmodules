@@ -22,3 +22,7 @@
 	path = sui-tool
 	url = git@github.com:Project-Magma-Monorepo/sui-tool.git
 	branch = main
+[submodule "sui-indexer-modular"]
+	path = sui-indexer-modular
+	url = git@github.com:Project-Magma-Monorepo/sui-indexer-modular.git
+	branch = main
