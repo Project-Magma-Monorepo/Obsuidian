@@ -8,10 +8,11 @@
 
 ## [📄 Read Loris' Master Report about RPC](Master_Project_Obsidian_Loris___Alexandre.pdf)
 
+## [📄 Read Alex's Master Report about Indexing](IndexingSolution_Whitepaper.pdf)
+
 
 ## Our RPC through Lava is deployed at https://sui.obsuidian.xyz 
 Feel free to test it, altough some services such as archives should not be available as we are not running them under Lava for Now, but it could totaly be added if a provider support archive reads.
-
 
 ## Project Structure
 
